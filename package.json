@@ -17,9 +17,8 @@
   "author": "Khoroshikh Arkadiy",
   "license": "MIT",
   "dependencies": {
-    "computed-style-to-inline-style": "^2.0.0",
     "juice": "^4.2.3",
-    "remove-svg-properties": "^0.3.3",
+    "svg-to-react-native-cli": "0.0.3",
     "svgo": "^1.0.5"
   }
 }

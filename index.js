@@ -3,6 +3,7 @@ const path = require("path");
 const { performance } = require("perf_hooks");
 const juice = require("juice");
 const SVGO = require("svgo");
+const { exec } = require("child_process");
 const { config } = require("./config.js");
 
 // constants
@@ -29,35 +30,26 @@ files.forEach(file => {
   const timeStart = performance.now();
 
   // Work with files
-  const svgData = fs.readFileSync(`${__dirname}/${file}`, {
-    encoding: "utf-8"
-  });
-  const result = juice(svgData);
-
+  const svgData = fs.readFileSync(`${__dirname}/${file}`, {encoding: "utf-8"});
   const pathFileToMin = `${pathToMinDir}/${path.basename(file, "svg")}.min.svg`;
 
-  fs.writeFile(pathFileToMin, result, err => {
-    if (err) console.error(err);
+  const data = juice(svgData);
 
-    fs.readFile(pathFileToMin, "utf8", (err, data) => {
+  svgo.optimize(data, {}).then(result => {
+    fs.writeFile(pathFileToMin, result.data, err => {
       if (err) console.error(err);
 
-      svgo.optimize(data, {}).then(result => {
-        fs.writeFile(pathFileToMin, result.data, err => {
-          if (err) console.error(err);
-          const finishFileSize = getFileSize(pathFileToMin);
-          const persentProgress = (finishFileSize / startFileSize).toFixed(2);
-          const timeFinish = parseInt(performance.now() - timeStart);
+      const finishFileSize = getFileSize(pathFileToMin);
+      const persentProgress = (100 - (finishFileSize / startFileSize * 100)).toFixed(2);
+      const timeFinish = parseInt(performance.now() - timeStart);
 
-          console.log("");
-          console.log(`${file}:`);
-          console.log(`Done in ${timeFinish} ms!`);
-          console.log(`${startFileSize} KiB - \x1b[32m${persentProgress}%\x1b[37m = ${finishFileSize} KiB`);
-          console.log("");
-        });
-      });
+      console.log("");
+      console.log(`${file}:`);
+      console.log(`Done in ${timeFinish} ms!`);
+      console.log(
+        `${startFileSize} KiB - \x1b[32m${persentProgress}%\x1b[37m = ${finishFileSize} KiB`
+      );
+      console.log("");
     });
   });
 });
-
-
