@@ -1,0 +1,25 @@
+{
+  "name": "svgtoreactnative",
+  "version": "1.0.0",
+  "description": "Convert svg files to React class for use this files in you ReactNative project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "svgo": "svgo -f ./assets -o ./out",
+    "svgo2": "svgo --enable={convertStyleToAttrs} -f ./ -o ./",
+    "svgo3": "svgo --show-plugins"
+  },
+  "keywords": [
+    "svg",
+    "react",
+    "reactNative"
+  ],
+  "author": "Khoroshikh Arkadiy",
+  "license": "MIT",
+  "dependencies": {
+    "computed-style-to-inline-style": "^2.0.0",
+    "juice": "^4.2.3",
+    "remove-svg-properties": "^0.3.3",
+    "svgo": "^1.0.5"
+  }
+}
