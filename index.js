@@ -5,11 +5,13 @@ const juice = require("juice");
 const SVGO = require("svgo");
 const { exec } = require("child_process");
 const { config } = require("./config.js");
+const xml2js = require("xml2js");
 
 // constants
 const pathToMinDir = `${__dirname}/minSvg`;
 const pathToComponentDir = `${__dirname}/components`;
 const svgo = new SVGO(config);
+const builder = new xml2js.Builder();
 
 const getFileSize = file => {
   const stats = fs.statSync(file);
@@ -31,25 +33,36 @@ files.forEach(file => {
 
   // Work with files
   const svgData = fs.readFileSync(`${__dirname}/${file}`, {encoding: "utf-8"});
-  const pathFileToMin = `${pathToMinDir}/${path.basename(file, "svg")}.min.svg`;
+
+  const pathFileToMin = `${pathToMinDir}/${path.basename(file, ".svg")}Icon.svg`;
 
   const data = juice(svgData);
 
-  svgo.optimize(data, {}).then(result => {
-    fs.writeFile(pathFileToMin, result.data, err => {
-      if (err) console.error(err);
+  xml2js.parseString(data, { trim: true }, (err, result) => {
+    const viewBox = result.svg["$"].viewbox.split(" ");
 
-      const finishFileSize = getFileSize(pathFileToMin);
-      const persentProgress = (100 - (finishFileSize / startFileSize * 100)).toFixed(2);
-      const timeFinish = parseInt(performance.now() - timeStart);
+    result.svg["$"].width = viewBox[2];
+    result.svg["$"].height = viewBox[3];
 
-      console.log("");
-      console.log(`${file}:`);
-      console.log(`Done in ${timeFinish} ms!`);
-      console.log(
-        `${startFileSize} KiB - \x1b[32m${persentProgress}%\x1b[37m = ${finishFileSize} KiB`
-      );
-      console.log("");
-    });
+    const xml = builder.buildObject(result);
+
+     svgo.optimize(xml, {}).then(result => {
+       fs.writeFile(pathFileToMin, result.data, err => {
+         if (err) console.error(err);
+
+         // Convert to React native class
+         exec(`svg-to-react-native -d ${pathToMinDir} -o ${pathToComponentDir}`);
+
+         const finishFileSize = getFileSize(pathFileToMin);
+         const persentProgress = (100 - finishFileSize / startFileSize * 100).toFixed(2);
+         const timeFinish = parseInt(performance.now() - timeStart);
+
+         console.log("");
+         console.log(`${file}:`);
+         console.log(`Done in ${timeFinish} ms!`);
+         console.log(`${startFileSize} KiB - \x1b[32m${persentProgress}%\x1b[37m = ${finishFileSize} KiB`);
+         console.log("");
+       });
+     });
   });
 });
