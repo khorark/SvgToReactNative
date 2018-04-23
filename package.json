@@ -1,6 +1,6 @@
 {
-  "name": "svgtoreactnative",
-  "version": "1.0.0",
+  "name": "svg-to-react-native",
+  "version": "0.1.0",
   "description": "Convert svg files to React class for use this files in you ReactNative project.",
   "main": "index.js",
   "scripts": {
