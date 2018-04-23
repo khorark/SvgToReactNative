@@ -1,9 +1,9 @@
-# svg-to-react-native
+# svg-icons-to-react-native
 Convert you svg files (exporting from AdobeXD) to ReactNative component.
 
 ## Installation
 ```
-npm install -g svg-to-react-native
+npm install -g svg-icons-to-react-native
 
 Steps work scripts:
 1) Clean svg;
@@ -15,4 +15,3 @@ This is beta version script. Please create ISSUE, if you find bag.
 ```
 
 ## Licence MIT.
-```

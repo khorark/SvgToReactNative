@@ -8,8 +8,8 @@ const { config } = require("./config.js");
 const xml2js = require("xml2js");
 
 // constants
-const pathToMinDir = `${__dirname}/minSvg`;
-const pathToComponentDir = `${__dirname}/components`;
+const pathToMinDir = `./minSvg`;
+const pathToComponentDir = `./components`;
 const svgo = new SVGO(config);
 const builder = new xml2js.Builder();
 
@@ -24,15 +24,15 @@ if (!fs.existsSync(pathToMinDir)) fs.mkdirSync(pathToMinDir);
 if (!fs.existsSync(pathToComponentDir)) fs.mkdirSync(pathToComponentDir);
 
 // Read all files from dir
-const files = fs.readdirSync(__dirname);
+const files = fs.readdirSync('./');
 
 files.forEach(file => {
   if (path.extname(file) !== ".svg") return false;
-  const startFileSize = getFileSize(`${__dirname}/${file}`);
+  const startFileSize = getFileSize(`./${file}`);
   const timeStart = performance.now();
 
   // Work with files
-  const svgData = fs.readFileSync(`${__dirname}/${file}`, {encoding: "utf-8"});
+  const svgData = fs.readFileSync(`./${file}`, {encoding: "utf-8"});
 
   const pathFileToMin = `${pathToMinDir}/${path.basename(file, ".svg")}Icon.svg`;
 
