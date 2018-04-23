@@ -1,4 +1,4 @@
-# SvgToReactNative
+# svg-to-react-native
 Convert you svg files (exporting from AdobeXD) to ReactNative component.
 
 ## Installation
@@ -12,6 +12,7 @@ Steps work scripts:
 4) Convert ro React Native component.
 
 This is beta version script. Please create ISSUE, if you find bag.
+```
 
 ## Licence MIT.
 ```
