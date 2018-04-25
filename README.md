@@ -15,4 +15,10 @@ Steps work scripts:
 
 This is beta version script. Please create ISSUE, if you find bag.
 
+## Example
+```
+To run the script go to the folder with you svg files and run command in console - svg-icons-to-react-native 
+
+```
+
 ## Licence MIT.
