@@ -53,30 +53,30 @@ files.forEach(file => {
       result.svg["$"].height = viewBox[3];
 
       const xml = builder.buildObject(result);
-    }
-
-    svgo.optimize(xml, {}).then(result => {
-      fs.writeFile(pathFileToMin, result.data, err => {
-        if (err) console.error(err);
-
-        // Convert to React native class
-        exec(`svg-to-react-native -d ${pathToMinDir} -o ${pathToComponentDir}`);
-
-        const finishFileSize = getFileSize(pathFileToMin);
-        const persentProgress = (
-          100 -
-          finishFileSize / startFileSize * 100
-        ).toFixed(2);
-        const timeFinish = parseInt(performance.now() - timeStart);
-
-        console.log("");
-        console.log(`${file}:`);
-        console.log(`Done in ${timeFinish} ms!`);
-        console.log(
-          `${startFileSize} KiB - \x1b[32m${persentProgress}%\x1b[37m = ${finishFileSize} KiB`
-        );
-        console.log("");
+      
+      svgo.optimize(xml, {}).then(result => {
+        fs.writeFile(pathFileToMin, result.data, err => {
+          if (err) console.error(err);
+  
+          // Convert to React native class
+          exec(`svg-to-react-native -d ${pathToMinDir} -o ${pathToComponentDir}`);
+  
+          const finishFileSize = getFileSize(pathFileToMin);
+          const persentProgress = (
+            100 -
+            finishFileSize / startFileSize * 100
+          ).toFixed(2);
+          const timeFinish = parseInt(performance.now() - timeStart);
+  
+          console.log("");
+          console.log(`${file}:`);
+          console.log(`Done in ${timeFinish} ms!`);
+          console.log(
+            `${startFileSize} KiB - \x1b[32m${persentProgress}%\x1b[37m = ${finishFileSize} KiB`
+          );
+          console.log("");
+        });
       });
-    });
+    }
   });
 });

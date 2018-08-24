@@ -12,7 +12,7 @@
     "reactNative"
   ],
   "bin": {
-    "svg-icons-to-react-native": "./index.js"
+    "strn": "./index.js"
   },
   "author": "Khoroshikh Arkadiy",
   "license": "MIT",
